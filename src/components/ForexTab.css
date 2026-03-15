@@ -1,0 +1,209 @@
+.forex-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Key currency strip */
+.forex-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.strip-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.strip-item:hover {
+  border-color: var(--accent);
+}
+
+.strip-item.active {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.strip-flag { font-size: 1.3rem; }
+
+.strip-code {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.strip-mid {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Body layout */
+.forex-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .forex-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Rates card */
+.rates-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.rates-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.rates-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.forex-search {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 14px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  min-width: 180px;
+  transition: border-color 0.15s;
+}
+
+.forex-search:focus {
+  border-color: var(--accent);
+}
+
+.forex-search::placeholder {
+  color: var(--text-muted);
+}
+
+/* Rates table */
+.rates-table-wrap {
+  overflow-x: auto;
+  max-height: 560px;
+  overflow-y: auto;
+}
+
+.rates-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.rates-table th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-primary);
+  padding: 10px 20px;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  z-index: 1;
+}
+
+.rates-table td {
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(42, 58, 85, 0.4);
+  color: var(--text-secondary);
+}
+
+.rates-table tr:last-child td {
+  border-bottom: none;
+}
+
+.rates-table tbody tr {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.rates-table tbody tr:hover td {
+  background: var(--bg-card-hover);
+}
+
+.rates-table tbody tr.row-active td {
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.td-currency {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+
+.curr-flag {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.curr-code {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+.curr-name {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.td-unit {
+  color: var(--text-muted) !important;
+  font-size: 0.8rem;
+}
+
+.td-buy {
+  color: var(--green) !important;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.td-sell {
+  color: var(--red) !important;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.no-results {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Right column */
+.forex-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

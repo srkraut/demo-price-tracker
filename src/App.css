@@ -66,6 +66,57 @@
   background: rgba(239, 68, 68, 0.3);
 }
 
+/* Tab navigation */
+.tab-nav {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  gap: 4px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: -1px;
+}
+
+.tab-btn:hover .tab-label {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  border-bottom-color: var(--accent);
+}
+
+.tab-btn.active .tab-label {
+  color: var(--accent);
+}
+
+.tab-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+.tab-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
 /* Card base */
 .card {
   background: var(--bg-card);

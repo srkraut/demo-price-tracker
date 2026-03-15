@@ -5,11 +5,11 @@ import CurrentPrice from './components/CurrentPrice'
 import PriceChart from './components/PriceChart'
 import PriceTable from './components/PriceTable'
 import StatsBar from './components/StatsBar'
+import ForexTab from './components/ForexTab'
 import './App.css'
 
 const STORAGE_KEY = 'eia_api_key'
 
-// EIA API: WTI crude oil daily spot prices (RWTC series)
 function buildUrl(apiKey, length = 365) {
   const params = new URLSearchParams({
     api_key: apiKey,
@@ -23,12 +23,18 @@ function buildUrl(apiKey, length = 365) {
   return `https://api.eia.gov/v2/petroleum/pri/spt/data/?${params}`
 }
 
+const TABS = [
+  { id: 'oil', label: '🛢️ Crude Oil', sub: 'WTI Spot Price · EIA' },
+  { id: 'forex', label: '💱 NRB Forex', sub: 'Exchange Rates · Nepal Rastra Bank' },
+]
+
 export default function App() {
+  const [activeTab, setActiveTab] = useState('oil')
   const [apiKey, setApiKey] = useState(() => localStorage.getItem(STORAGE_KEY) || '')
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [range, setRange] = useState(90) // days shown in chart
+  const [range, setRange] = useState(90)
 
   const fetchPrices = useCallback(async (key) => {
     if (!key) return
@@ -42,7 +48,7 @@ export default function App() {
       const rows = (json.response?.data || [])
         .filter(d => d.value !== null)
         .map(d => ({ date: d.period, price: parseFloat(d.value) }))
-        .reverse() // oldest first
+        .reverse()
       if (rows.length === 0) throw new Error('No data returned. Check your API key.')
       setData(rows)
     } catch (err) {
@@ -72,34 +78,57 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header onClearKey={apiKey ? handleClearKey : undefined} />
+      <Header onClearKey={activeTab === 'oil' && apiKey ? handleClearKey : undefined} />
 
-      {!apiKey ? (
-        <ApiKeySetup onSave={handleSaveKey} />
-      ) : (
+      {/* Tab navigation */}
+      <div className="tab-nav">
+        <div className="tab-nav-inner">
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              <span className="tab-label">{tab.label}</span>
+              <span className="tab-sub">{tab.sub}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab content */}
+      {activeTab === 'oil' && (
+        !apiKey ? (
+          <div className="main"><ApiKeySetup onSave={handleSaveKey} /></div>
+        ) : (
+          <main className="main">
+            {loading && (
+              <div className="loading-overlay">
+                <div className="spinner" />
+                <span>Fetching EIA data…</span>
+              </div>
+            )}
+            {error && (
+              <div className="error-banner">
+                <strong>Error:</strong> {error}
+                <button onClick={() => fetchPrices(apiKey)} className="retry-btn">Retry</button>
+              </div>
+            )}
+            {!loading && !error && data.length > 0 && (
+              <>
+                <CurrentPrice data={data} />
+                <StatsBar data={data} range={range} />
+                <PriceChart data={visibleData} range={range} onRangeChange={setRange} />
+                <PriceTable data={data} />
+              </>
+            )}
+          </main>
+        )
+      )}
+
+      {activeTab === 'forex' && (
         <main className="main">
-          {loading && (
-            <div className="loading-overlay">
-              <div className="spinner" />
-              <span>Fetching EIA data…</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="error-banner">
-              <strong>Error:</strong> {error}
-              <button onClick={() => fetchPrices(apiKey)} className="retry-btn">Retry</button>
-            </div>
-          )}
-
-          {!loading && !error && data.length > 0 && (
-            <>
-              <CurrentPrice data={data} />
-              <StatsBar data={data} range={range} />
-              <PriceChart data={visibleData} range={range} onRangeChange={setRange} />
-              <PriceTable data={data} />
-            </>
-          )}
+          <ForexTab />
         </main>
       )}
     </div>

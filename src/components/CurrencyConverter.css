@@ -1,0 +1,124 @@
+.converter {
+  padding: 20px;
+}
+
+.conv-dir-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 16px;
+}
+
+.dir-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.dir-btn:hover {
+  color: var(--text-primary);
+}
+
+.dir-btn.active {
+  background: var(--accent);
+  color: #000;
+}
+
+.conv-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  transition: border-color 0.15s;
+}
+
+.conv-input-row:focus-within {
+  border-color: var(--accent);
+}
+
+.conv-from-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--accent);
+  min-width: 36px;
+}
+
+.conv-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  outline: none;
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.conv-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Remove number input arrows */
+.conv-input::-webkit-outer-spin-button,
+.conv-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.conv-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.conv-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--bg-primary);
+}
+
+.conv-result-row.mid {
+  border: 1px solid var(--border);
+}
+
+.conv-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.conv-value {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.conv-value.green { color: var(--green); }
+.conv-value.red { color: var(--red); }
+
+.conv-rate-info {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
