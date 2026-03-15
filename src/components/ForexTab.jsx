@@ -43,7 +43,7 @@ export default function ForexTab() {
     setLoading(true)
     setError('')
     try {
-      const url = `${NRB_BASE}?per_page=1&from=${daysAgo(7)}&to=${today()}`
+      const url = `${NRB_BASE}?page=1&per_page=1&from=${daysAgo(7)}&to=${today()}`
       const res = await fetch(url)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json()
@@ -66,7 +66,7 @@ export default function ForexTab() {
   const fetchHistory = useCallback(async (iso3) => {
     setHistoryLoading(true)
     try {
-      const url = `${NRB_BASE}?per_page=90&from=${daysAgo(90)}&to=${today()}`
+      const url = `${NRB_BASE}?page=1&per_page=90&from=${daysAgo(90)}&to=${today()}`
       const res = await fetch(url)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json()
