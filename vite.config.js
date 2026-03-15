@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/crude-oil-price/',
+  base: '/demo-price-tracker/',
   build: {
     rollupOptions: {
       output: {
