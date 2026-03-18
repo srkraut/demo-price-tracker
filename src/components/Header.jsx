@@ -1,6 +1,6 @@
 import './Header.css'
 
-export default function Header({ onClearKey }) {
+export default function Header({ onClearKey, theme, onToggleTheme }) {
   return (
     <header className="header">
       <div className="header-inner">
@@ -11,11 +11,28 @@ export default function Header({ onClearKey }) {
             <p className="header-subtitle">WTI Spot Price · Powered by EIA Open Data</p>
           </div>
         </div>
-        {onClearKey && (
-          <button className="clear-key-btn" onClick={onClearKey} title="Remove API key">
-            Change API Key
+
+        <div className="header-actions">
+          {onClearKey && (
+            <button className="clear-key-btn" onClick={onClearKey} title="Remove API key">
+              Change API Key
+            </button>
+          )}
+
+          <button
+            className="theme-toggle"
+            onClick={onToggleTheme}
+            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            aria-label="Toggle theme"
+          >
+            <span className="theme-toggle-track">
+              <span className="theme-toggle-thumb" />
+            </span>
+            <span className="theme-toggle-icon">
+              {theme === 'light' ? '🌙' : '☀️'}
+            </span>
           </button>
-        )}
+        </div>
       </div>
     </header>
   )

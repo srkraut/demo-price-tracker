@@ -8,6 +8,9 @@ import StatsBar from './components/StatsBar'
 import ForexTab from './components/ForexTab'
 import './App.css'
 
+// Toggle NRB Forex tab — comment out to hide, uncomment to show
+const SHOW_FOREX = true
+
 const STORAGE_KEY = 'eia_api_key'
 
 function buildUrl(apiKey, length = 365) {
@@ -23,14 +26,19 @@ function buildUrl(apiKey, length = 365) {
   return `https://api.eia.gov/v2/petroleum/pri/spt/data/?${params}`
 }
 
-const TABS = [
-  { id: 'oil', label: '🛢️ Crude Oil', sub: 'WTI Spot Price · EIA' },
-  { id: 'forex', label: '💱 NRB Forex', sub: 'Exchange Rates · Nepal Rastra Bank' },
-]
-
 export default function App() {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
   const [activeTab, setActiveTab] = useState('oil')
   const [apiKey, setApiKey] = useState(() => localStorage.getItem(STORAGE_KEY) || '')
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  function toggleTheme() {
+    setTheme(t => t === 'light' ? 'dark' : 'light')
+  }
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -78,25 +86,32 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header onClearKey={activeTab === 'oil' && apiKey ? handleClearKey : undefined} />
+      <Header
+        onClearKey={activeTab === 'oil' && apiKey ? handleClearKey : undefined}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
 
-      {/* Tab navigation */}
-      <div className="tab-nav">
-        <div className="tab-nav-inner">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <span className="tab-label">{tab.label}</span>
-              <span className="tab-sub">{tab.sub}</span>
-            </button>
-          ))}
+      {SHOW_FOREX && (
+        <div className="tab-nav">
+          <div className="tab-nav-inner">
+            {[
+              { id: 'oil',   label: '🛢️ Crude Oil', sub: 'WTI Spot Price · EIA' },
+              { id: 'forex', label: '💱 NRB Forex',  sub: 'Exchange Rates · Nepal Rastra Bank' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                <span className="tab-label">{tab.label}</span>
+                <span className="tab-sub">{tab.sub}</span>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Tab content */}
       {activeTab === 'oil' && (
         !apiKey ? (
           <div className="main"><ApiKeySetup onSave={handleSaveKey} /></div>
@@ -126,7 +141,7 @@ export default function App() {
         )
       )}
 
-      {activeTab === 'forex' && (
+      {SHOW_FOREX && activeTab === 'forex' && (
         <main className="main">
           <ForexTab />
         </main>
